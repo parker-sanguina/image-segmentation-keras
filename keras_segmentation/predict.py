@@ -9,10 +9,10 @@ import numpy as np
 from tqdm import tqdm
 from time import time
 
-from .train import find_latest_checkpoint
-from .data_utils.data_loader import get_image_array, get_segmentation_array,\
+from train import find_latest_checkpoint
+from data_utils.data_loader import get_image_array, get_segmentation_array,\
     DATA_LOADER_SEED, class_colors, get_pairs_from_paths
-from .models.config import IMAGE_ORDERING
+from models.config import IMAGE_ORDERING
 
 
 random.seed(DATA_LOADER_SEED)
@@ -20,7 +20,7 @@ random.seed(DATA_LOADER_SEED)
 
 def model_from_checkpoint_path(checkpoints_path):
 
-    from .models.all_models import model_from_name
+    from models.all_models import model_from_name
     assert (os.path.isfile(checkpoints_path+"_config.json")
             ), "Checkpoint not found."
     model_config = json.loads(

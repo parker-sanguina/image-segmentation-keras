@@ -1,8 +1,7 @@
 import json
 import os
 
-from .data_utils.data_loader import image_segmentation_generator, \
-    verify_segmentation_dataset
+from data_utils.data_loader import image_segmentation_generator, verify_segmentation_dataset
 import six
 from keras.callbacks import Callback
 from tensorflow.keras.callbacks import ModelCheckpoint
@@ -94,8 +93,7 @@ def train(model,
         # create the model from the name
         assert (n_classes is not None), "Please provide the n_classes"
         if (input_height is not None) and (input_width is not None):
-            model = model_from_name[model](
-                n_classes, input_height=input_height, input_width=input_width)
+            model = model_from_name[model](n_classes, input_height=input_height, input_width=input_width)
         else:
             model = model_from_name[model](n_classes)
 

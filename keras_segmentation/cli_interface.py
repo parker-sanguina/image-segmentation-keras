@@ -141,8 +141,7 @@ def visualize_dataset_action(command_parser):
 
 
 def main():
-    assert len(sys.argv) >= 2, \
-        "python -m keras_segmentation <command> <arguments>"
+    assert len(sys.argv) >= 2, "python -m keras_segmentation <command> <arguments>"
 
     main_parser = argparse.ArgumentParser()
     command_parser = main_parser.add_subparsers()

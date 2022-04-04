@@ -1,7 +1,7 @@
-import keras
-from keras.models import *
-from keras.layers import *
-from keras import layers
+import tensorflow
+from tensorflow.keras.models import *
+from tensorflow.keras.layers import *
+from tensorflow.keras import layers
 
 # Source:
 # https://github.com/fchollet/deep-learning-models/blob/master/resnet50.py
@@ -70,8 +70,7 @@ def identity_block(input_tensor, kernel_size, filters, stage, block):
     return x
 
 
-def conv_block(input_tensor, kernel_size, filters, stage, block,
-               strides=(2, 2)):
+def conv_block(input_tensor, kernel_size, filters, stage, block, strides=(2, 2)):
     """conv_block is the block that has a conv layer at shortcut
     # Arguments
         input_tensor: input tensor
@@ -140,8 +139,7 @@ def get_resnet50_encoder(input_height=224,  input_width=224,
         bn_axis = 1
 
     x = ZeroPadding2D((3, 3), data_format=IMAGE_ORDERING)(img_input)
-    x = Conv2D(64, (7, 7), data_format=IMAGE_ORDERING,
-               strides=(2, 2), name='conv1')(x)
+    x = Conv2D(64, (7, 7), data_format=IMAGE_ORDERING, strides=(2, 2), name='conv1')(x)
     f1 = x
 
     x = BatchNormalization(axis=bn_axis, name='bn_conv1')(x)
@@ -172,13 +170,11 @@ def get_resnet50_encoder(input_height=224,  input_width=224,
     x = identity_block(x, 3, [512, 512, 2048], stage=5, block='c')
     f5 = x
 
-    x = AveragePooling2D(
-        (7, 7), data_format=IMAGE_ORDERING, name='avg_pool')(x)
+    x = AveragePooling2D((7, 7), data_format=IMAGE_ORDERING, name='avg_pool')(x)
     # f6 = x
 
     if pretrained == 'imagenet':
-        weights_path = keras.utils.get_file(
-            pretrained_url.split("/")[-1], pretrained_url)
+        weights_path = tensorflow.keras.utils.get_file(pretrained_url.split("/")[-1], pretrained_url)
         Model(img_input, x).load_weights(weights_path, by_name=True, skip_mismatch=True)
 
     return img_input, [f1, f2, f3, f4, f5]

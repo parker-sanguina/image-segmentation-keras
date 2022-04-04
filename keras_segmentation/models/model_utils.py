@@ -6,8 +6,8 @@ import keras.backend as K
 from tqdm import tqdm
 
 from .config import IMAGE_ORDERING
-from ..train import train
-from ..predict import predict, predict_multiple, evaluate
+from train import train
+from predict import predict, predict_multiple, evaluate
 
 
 # source m1 , dest m2
@@ -88,6 +88,7 @@ def get_segmentation_model(input, output):
         n_classes = o_shape[3]
         o = (Reshape((output_height*output_width, -1)))(o)
 
+    # Final softmax layer indicating class of each pixel
     o = (Activation('softmax'))(o)
     model = Model(img_input, o)
     model.output_width = output_width

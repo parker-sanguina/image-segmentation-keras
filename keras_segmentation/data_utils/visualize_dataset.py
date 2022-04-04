@@ -12,8 +12,7 @@ from .data_loader import \
 random.seed(DATA_LOADER_SEED)
 
 
-def _get_colored_segmentation_image(img, seg, colors,
-                                    n_classes, do_augment=False, augment_name='aug_all', custom_aug=None):
+def _get_colored_segmentation_image(img, seg, colors, n_classes, do_augment=False, augment_name='aug_all', custom_aug=None):
     """ Return a colored segmented image """
     seg_img = np.zeros_like(seg)
 
@@ -24,12 +23,9 @@ def _get_colored_segmentation_image(img, seg, colors,
             img, seg[:, :, 0] = augment_seg(img, seg[:, :, 0], augmentation_name=augment_name)
 
     for c in range(n_classes):
-        seg_img[:, :, 0] += ((seg[:, :, 0] == c)
-                             * (colors[c][0])).astype('uint8')
-        seg_img[:, :, 1] += ((seg[:, :, 0] == c)
-                             * (colors[c][1])).astype('uint8')
-        seg_img[:, :, 2] += ((seg[:, :, 0] == c)
-                             * (colors[c][2])).astype('uint8')
+        seg_img[:, :, 0] += ((seg[:, :, 0] == c) * (colors[c][0])).astype('uint8')
+        seg_img[:, :, 1] += ((seg[:, :, 0] == c) * (colors[c][1])).astype('uint8')
+        seg_img[:, :, 2] += ((seg[:, :, 0] == c) * (colors[c][2])).astype('uint8')
 
     return img, seg_img
 
@@ -39,9 +35,7 @@ def visualize_segmentation_dataset(images_path, segs_path, n_classes,
                                    no_show=False, image_size=None, augment_name="aug_all", custom_aug=None):
     try:
         # Get image-segmentation pairs
-        img_seg_pairs = get_pairs_from_paths(
-                            images_path, segs_path,
-                            ignore_non_matching=ignore_non_matching)
+        img_seg_pairs = get_pairs_from_paths(images_path, segs_path, ignore_non_matching=ignore_non_matching)
 
         # Get the colors for the classes
         colors = class_colors
@@ -50,12 +44,9 @@ def visualize_segmentation_dataset(images_path, segs_path, n_classes,
         for im_fn, seg_fn in img_seg_pairs:
             img = cv2.imread(im_fn)
             seg = cv2.imread(seg_fn)
-            print("Found the following classes in the segmentation image:",
-                  np.unique(seg))
-            img, seg_img = _get_colored_segmentation_image(
-                                                    img, seg, colors,
-                                                    n_classes,
-                                                    do_augment=do_augment, augment_name=augment_name, custom_aug=custom_aug)
+            print("Found the following classes in the segmentation image:", np.unique(seg))
+            img, seg_img = _get_colored_segmentation_image(img, seg, colors, n_classes, do_augment=do_augment, 
+                                                           augment_name=augment_name, custom_aug=custom_aug)
 
             if image_size is not None:
                 img = cv2.resize(img, image_size)
@@ -74,9 +65,7 @@ def visualize_segmentation_dataset_one(images_path, segs_path, n_classes,
                                        do_augment=False, no_show=False,
                                        ignore_non_matching=False):
 
-    img_seg_pairs = get_pairs_from_paths(
-                                images_path, segs_path,
-                                ignore_non_matching=ignore_non_matching)
+    img_seg_pairs = get_pairs_from_paths(images_path, segs_path, ignore_non_matching=ignore_non_matching)
 
     colors = class_colors
 
@@ -84,12 +73,9 @@ def visualize_segmentation_dataset_one(images_path, segs_path, n_classes,
 
     img = cv2.imread(im_fn)
     seg = cv2.imread(seg_fn)
-    print("Found the following classes "
-          "in the segmentation image:", np.unique(seg))
+    print("Found the following classes in the segmentation image:", np.unique(seg))
 
-    img, seg_img = _get_colored_segmentation_image(
-                                        img, seg, colors,
-                                        n_classes, do_augment=do_augment)
+    img, seg_img = _get_colored_segmentation_image(img, seg, colors, n_classes, do_augment=do_augment)
 
     if not no_show:
         cv2.imshow("img", img)
@@ -107,5 +93,4 @@ if __name__ == "__main__":
     parser.add_argument("--n_classes", type=int)
     args = parser.parse_args()
 
-    visualize_segmentation_dataset(
-        args.images, args.annotations, args.n_classes)
+    visualize_segmentation_dataset(args.images, args.annotations, args.n_classes)
